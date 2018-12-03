@@ -33,7 +33,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FullTextSearchService\FullTextSearchService.csproj" />
-    <ProjectReference Include="..\RepositoryScraperService\ScraperService.csproj" />
+    <ProjectReference Include="..\ScraperService\ScraperService.csproj" />
     <ProjectReference Include="..\UserRepoSearchActor\UserRepoSearchActor.csproj" />
     <ProjectReference Include="..\WebUIService\WebUIService.csproj" />
   </ItemGroup>
