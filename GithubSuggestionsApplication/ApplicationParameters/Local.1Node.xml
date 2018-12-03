@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Application xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" Name="fabric:/GithubSuggestionsApplication" xmlns="http://schemas.microsoft.com/2011/01/fabric">
+  <Parameters>
+    <Parameter Name="ScraperService_PartitionCount" Value="1" />
+    <Parameter Name="ScraperService_MinReplicaSetSize" Value="1" />
+    <Parameter Name="ScraperService_TargetReplicaSetSize" Value="1" />
+    <Parameter Name="FullTextSearchService_PartitionCount" Value="1" />
+    <Parameter Name="FullTextSearchService_MinReplicaSetSize" Value="1" />
+    <Parameter Name="FullTextSearchService_TargetReplicaSetSize" Value="1" />
+    <Parameter Name="WebUIService_ASPNETCORE_ENVIRONMENT" Value="Development" />
+    <Parameter Name="WebUIService_InstanceCount" Value="1" />
+    <Parameter Name="WebUIService_GitHub_ClientId" Value="a64cc7c88b19cbc3fd17" />
+    <Parameter Name="WebUIService_GitHub_ClientSecret" Value="2bf87bb96aca2adeb75b698f07f0dfdb1077b82a" />
+    <Parameter Name="WebUIService_GitHub_RedirectUri" Value="http://localhost:8551/oauth/callback" />
+    <Parameter Name="UserRepoSearchActorService_PartitionCount" Value="1" />
+    <Parameter Name="UserRepoSearchActorService_TargetReplicaSetSize" Value="1" />
+    <Parameter Name="UserRepoSearchActorService_MinReplicaSetSize" Value="1" />
+  </Parameters>
+</Application>

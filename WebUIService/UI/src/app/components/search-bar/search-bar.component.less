@@ -1,0 +1,23 @@
+@import (reference) "../../styles/constants.less";
+@import (reference) "../../styles/mixins.less";
+
+div {
+  display: flex;
+
+  input {
+    .transition();
+
+    box-sizing: border-box;
+    padding: 1em 1.5em;
+    border-radius: @border-radius;
+    box-shadow: 0 0.3rem 1rem #EEE;
+    border: none;
+    outline: none;
+    margin-bottom: 1rem;
+    flex-grow: 1;
+
+    &:focus {
+      box-shadow: 0 0.3rem 1rem #CCC;
+    }
+  }
+}

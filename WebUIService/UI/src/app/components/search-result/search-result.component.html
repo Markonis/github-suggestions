@@ -1,0 +1,15 @@
+<a [class]="type" href="https://github.com/{{item.repository.owner}}/{{item.repository.name}}" target="_blank" *ngIf="item">
+  <section class="description">
+    <h2 title="@{{item.repository.owner}}/{{item.repository.name}}">
+      <small>{{item.repository.owner}} /</small>
+      {{item.repository.name}}
+    </h2>
+    <p>{{item.repository.description}}</p>
+  </section>
+  <section class="stats">
+    <span title="Stars">⭐ {{item.repository.stargazersCount}}</span>
+    <span title="Open Issues">❕ {{item.repository.openIssuesCount}}</span>
+    <span title="Watchers">👀 {{item.repository.watchersCount}}</span>
+    <span title="Forks">🔀 {{item.repository.forksCount}}</span>
+  </section>
+</a>

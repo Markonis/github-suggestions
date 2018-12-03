@@ -1,0 +1,15 @@
+<div class="wrapper">
+  <p class="welcome">
+    Welcome to Code Ideas! 👋 This is a GitHub search application for public repositories,
+    which incrementally provides better search results and suggestions,
+    based on your previous search history. It uses only public data.
+  </p>
+  <div *ngIf="sessionService.isLoggedIn">
+    <app-search-bar (performSearch)="performSearch($event)" (autoComplete)="autoComplete($event)"></app-search-bar>
+    <app-auto-complete *ngIf="searchService.autoCompleteOutput" [items]="searchService.autoCompleteOutput.items"></app-auto-complete>
+    <app-search-results [searchOutput]="searchService.searchOutput" [suggestOutput]="searchService.suggestOutput"></app-search-results>
+  </div>
+  <div class="login" *ngIf="!sessionService.isLoggedIn">
+    <a [href]="oauthService.authUrl">🚪 Login with GitHub</a>
+  </div>
+</div>

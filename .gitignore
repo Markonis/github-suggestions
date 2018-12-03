@@ -1,0 +1,10 @@
+[Bb]in
+[Oo]bj
+.vs
+*.csproj.user
+*.sfproj.user
+node_modules
+packages
+WebUIService/wwwroot
+WebUIService/UI/dist
+GithubSuggestionsApplication/pkg

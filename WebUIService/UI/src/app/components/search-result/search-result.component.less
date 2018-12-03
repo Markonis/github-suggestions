@@ -1,0 +1,44 @@
+@import (reference) "../../styles/constants.less";
+@import (reference) "../../styles/mixins.less";
+
+a {
+  .card();
+  .transition();
+
+  &.suggestion {
+    background: turquoise;
+  }
+
+  top: 0;
+  position: relative;
+  text-decoration: none;
+  color: black;
+  display: block;
+  text-overflow: ellipsis;
+  margin-bottom: 1rem;
+
+  &:hover {
+    top: -0.2rem;
+    box-shadow: 0 0.5rem 1.5rem #CCC;
+  }
+
+  h2 {
+    margin-top: 0;
+    margin-bottom: 0.5em;
+  }
+
+  section {
+    padding: 0.5em;
+    overflow: hidden;
+  }
+
+  .stats {
+    span {
+      margin: 0.3em;
+      padding: 0.3em 0.5em;
+      border-radius: @border-radius;
+      background: whitesmoke;
+    }
+  }
+}
+

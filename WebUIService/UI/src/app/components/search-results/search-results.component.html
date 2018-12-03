@@ -1,0 +1,12 @@
+<div>
+  <section *ngIf="searchOutput !== null">
+    <app-search-result *ngFor="let item of searchOutput.items" [item]="item">
+    </app-search-result>
+  </section>
+
+  <section *ngIf="suggestOutput !== null">
+    <h2>Suggested for You</h2>
+    <app-search-result *ngFor="let item of suggestOutput.items" [item]="item" [type]="'suggestion'">
+    </app-search-result>
+  </section>
+</div>

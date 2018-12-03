@@ -1,0 +1,140 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "version": 1,
+  "newProjectRoot": "projects",
+  "projects": {
+    "web-ui": {
+      "root": "UI/",
+      "sourceRoot": "UI/src",
+      "projectType": "application",
+      "prefix": "app",
+      "schematics": {
+        "@schematics/angular:component": {
+          "styleext": "less"
+        }
+      },
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "wwwroot",
+            "index": "UI/src/index.html",
+            "main": "UI/src/main.ts",
+            "polyfills": "UI/src/polyfills.ts",
+            "tsConfig": "UI/src/tsconfig.app.json",
+            "assets": [
+              "UI/src/favicon.ico",
+              "UI/src/assets"
+            ],
+            "styles": [
+              "./node_modules/normalize.css/normalize.css",
+              "UI/src/styles.less"
+            ],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "UI/src/environments/environment.ts",
+                  "with": "UI/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "web-ui:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "web-ui:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "web-ui:build"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "UI/src/test.ts",
+            "polyfills": "UI/src/polyfills.ts",
+            "tsConfig": "UI/src/tsconfig.spec.json",
+            "karmaConfig": "UI/src/karma.conf.js",
+            "styles": [
+              "UI/src/styles.less"
+            ],
+            "scripts": [],
+            "assets": [
+              "UI/src/favicon.ico",
+              "UI/src/assets"
+            ]
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "UI/src/tsconfig.app.json",
+              "UI/src/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "web-ui-e2e": {
+      "root": "UI/e2e/",
+      "projectType": "application",
+      "prefix": "",
+      "architect": {
+        "e2e": {
+          "builder": "@angular-devkit/build-angular:protractor",
+          "options": {
+            "protractorConfig": "UI/e2e/protractor.conf.js",
+            "devServerTarget": "web-ui:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "web-ui:serve:production"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": "UI/e2e/tsconfig.e2e.json",
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "defaultProject": "web-ui"
+}

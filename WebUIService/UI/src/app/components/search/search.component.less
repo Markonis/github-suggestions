@@ -1,0 +1,34 @@
+@import (reference) "../../styles/mixins.less";
+@import (reference) "../../styles/constants.less";
+
+.wrapper {
+  padding: 1rem;
+
+  .welcome {
+    text-align: center;
+    padding: 1em;
+    background: whitesmoke;
+    border-radius: @border-radius;
+  }
+
+  .login {
+    text-align: center;
+
+    a {
+      .transition();
+
+      padding: 1em 1.4em;
+      display: inline-block;
+      border-radius: 3em;
+      font-size: 1.2em;
+      background: turquoise;
+      text-decoration: none;
+      color: black;
+
+      &:hover {
+        .shadow();
+      }
+    }
+  }
+}
+

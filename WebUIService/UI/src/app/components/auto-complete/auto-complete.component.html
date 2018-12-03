@@ -1,0 +1,8 @@
+<ul *ngIf="items && items.length > 0">
+  <li *ngFor="let item of items">
+    <a href="https://github.com/{{item.data.owner}}/{{item.data.name}}" target="_blank">
+      <span><small>{{item.data.owner}}</small>/{{item.data.name}}</span>
+      <span class="timestamp">{{item.cachedAt | date}}</span>
+    </a>
+  </li>
+</ul>

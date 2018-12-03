@@ -1,0 +1,44 @@
+@import "../../styles/mixins.less";
+@import "../../styles/constants.less";
+
+ul {
+  .shadow();
+
+  list-style: none;
+  padding: 0;
+  margin-top: 0;
+  border-radius: @border-radius;
+
+  li {
+    a {
+      .transition();
+      padding: 1em;
+      border-bottom: 1px solid whitesmoke;
+      display: block;
+      z-index: 1;
+      text-decoration: none;
+      color: black;
+      cursor: pointer;
+
+      .timestamp {
+        float: right;
+      }
+    }
+  }
+
+  li:hover a {
+    position: relative;
+    box-shadow: 0 0 2em #DDD;
+  }
+
+  li:first-child {
+    border-top-left-radius: @border-radius;
+    border-top-right-radius: @border-radius;
+  }
+
+  li:last-child {
+    border-bottom-left-radius: @border-radius;
+    border-bottom-right-radius: @border-radius;
+    border-bottom: none;
+  }
+}
