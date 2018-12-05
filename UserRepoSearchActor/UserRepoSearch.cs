@@ -20,17 +20,18 @@ namespace UserRepoSearchActor
     {
         public async static Task<Result<SearchOutput>> SearchAsync(
             string actorId, IActorStateManager stateManager,
-            StatefulServiceContext context,
+            IScraperService scraperService,
+            IFullTextSearchService fullTextSearchService,
             SearchInput input)
         {
             if (await ShouldRequestUserInfoScrapingAsync(stateManager))
                 await RequestUserInfoScrapingAsync(
                     actorId: actorId,
                     stateManager: stateManager,
-                    context: context,
+                    scraperService: scraperService,
                     authToken: input.AuthToken);
 
-            var result = await PerformFullTextSearchAsync(context, input);
+            var result = await PerformFullTextSearchAsync(fullTextSearchService, input);
 
             List<SearchOutput.Item> items = new List<SearchOutput.Item>();
 
@@ -49,7 +50,7 @@ namespace UserRepoSearchActor
 
                 if (ShouldRequestRepositoryScraping(item))
                     await RequestRepositoryScrapingAsync(
-                        context: context,
+                        scraperService: scraperService,
                         actorId: actorId,
                         stateManager: stateManager,
                         authToken: input.AuthToken,
@@ -88,7 +89,7 @@ namespace UserRepoSearchActor
 
         private async static Task RequestUserInfoScrapingAsync(
             string actorId, IActorStateManager stateManager,
-            StatefulServiceContext context, string authToken)
+            IScraperService scraperService, string authToken)
         {
             string userLogin = actorId;
 
@@ -97,9 +98,6 @@ namespace UserRepoSearchActor
             {
                 Login = userLogin
             });
-
-            IScraperService scraperService = ServiceProvider
-                .GetScraperService(context);
 
             await scraperService.RequestUserInfoScrapingAsync(
                 new RequestUserInfoScrapingInput
@@ -118,12 +116,8 @@ namespace UserRepoSearchActor
         }
 
         private async static Task<Result<Domain.V1.Messages.FullTextSearch.SearchOutput>>
-            PerformFullTextSearchAsync(
-            StatefulServiceContext context, SearchInput input)
+            PerformFullTextSearchAsync(IFullTextSearchService fullTextSearchService, SearchInput input)
         {
-            IFullTextSearchService fullTextSearchService = ServiceProvider
-                .GetFullTextSearchService(context);
-
             return await fullTextSearchService.SearchAsync(new SearchInput
             {
                 AuthToken = input.AuthToken,
@@ -157,7 +151,7 @@ namespace UserRepoSearchActor
         }
 
         private async static Task RequestRepositoryScrapingAsync(
-            StatefulServiceContext context, IActorStateManager stateManager,
+            IScraperService scraperService, IActorStateManager stateManager,
             string actorId, string authToken, Repository repository)
         {
             string userLogin = actorId;
@@ -168,9 +162,6 @@ namespace UserRepoSearchActor
                 {
                     Repository = repository
                 });
-
-            IScraperService scraperService = ServiceProvider
-                .GetScraperService(context);
 
             await scraperService.RequestRepositoryScrapingAsync(
                 new RequestRepositoryScrapingInput

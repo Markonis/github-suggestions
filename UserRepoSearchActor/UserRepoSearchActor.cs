@@ -57,10 +57,17 @@ namespace UserRepoSearchActor
 
         public Task<Result<SearchOutput>> SearchAsync(SearchInput input)
         {
+            IFullTextSearchService fullTextSearchService =
+                ServiceProvider.GetFullTextSearchService(ActorService.Context);
+
+            IScraperService scraperService =
+                ServiceProvider.GetScraperService(ActorService.Context);
+
             return UserRepoSearch.SearchAsync(
                 actorId: this.GetActorId().ToString(),
                 stateManager: StateManager,
-                context: ActorService.Context,
+                fullTextSearchService: fullTextSearchService,
+                scraperService: scraperService,
                 input: input);
         }
 
