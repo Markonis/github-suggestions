@@ -58,5 +58,34 @@ namespace FullTextSearchService.Test
             Assert.True(result.Success);
             Assert.Equal(expectedResult.Data, result.Data);
         }
+
+        [Fact]
+        public void SearchAsync_ShouldPerformApiSearchIfNotFresh()
+        {
+            Mock<ITransaction> tx = new Mock<ITransaction>();
+
+            Mock<IReliableDictionary<string, CachedItem<SearchOutput>>> cache =
+                new Mock<IReliableDictionary<string, CachedItem<SearchOutput>>>();
+
+            Result<SearchOutput> expectedResult = new Result<SearchOutput>
+            {
+                Success = true,
+                Data = new SearchOutput { }
+            };
+
+            cache.Setup(dict => dict.TryGetValueAsync(It.IsAny<ITransaction>(), It.IsAny<string>()))
+                .Returns(Task.FromResult(new ConditionalValue<CachedItem<SearchOutput>>(false, null)));
+
+            Mock<IGitHubClient> gitHubClient = new Mock<IGitHubClient>();
+            gitHubClient.Setup(client => client.SearchRepositoriesAsync(It.IsAny<string>(), It.IsAny<string>()))
+                .Returns(Task.FromResult(expectedResult));
+
+            Result<SearchOutput> result = FullTextSearch.SearchAsync(
+               input: new SearchInput { Query = "Test" }, cache: cache.Object,
+               tx: tx.Object, gitHubClient: gitHubClient.Object).Result;
+
+            Assert.True(result.Success);
+            Assert.Equal(expectedResult.Data, result.Data);
+        }
     }
 }
