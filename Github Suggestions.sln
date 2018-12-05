@@ -33,6 +33,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain", "Domain\Domain.csp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScraperService", "ScraperService\ScraperService.csproj", "{E3C32B55-F571-4496-89CF-46E5A7B9FCDF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FullTextSearchService.Test", "FullTextSearchService.Test\FullTextSearchService.Test.csproj", "{4FC0D6EB-BB05-48B3-A7F5-2841908EA867}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -137,6 +139,14 @@ Global
 		{E3C32B55-F571-4496-89CF-46E5A7B9FCDF}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E3C32B55-F571-4496-89CF-46E5A7B9FCDF}.Release|x64.ActiveCfg = Release|Any CPU
 		{E3C32B55-F571-4496-89CF-46E5A7B9FCDF}.Release|x64.Build.0 = Release|Any CPU
+		{4FC0D6EB-BB05-48B3-A7F5-2841908EA867}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4FC0D6EB-BB05-48B3-A7F5-2841908EA867}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4FC0D6EB-BB05-48B3-A7F5-2841908EA867}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{4FC0D6EB-BB05-48B3-A7F5-2841908EA867}.Debug|x64.Build.0 = Debug|Any CPU
+		{4FC0D6EB-BB05-48B3-A7F5-2841908EA867}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4FC0D6EB-BB05-48B3-A7F5-2841908EA867}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4FC0D6EB-BB05-48B3-A7F5-2841908EA867}.Release|x64.ActiveCfg = Release|Any CPU
+		{4FC0D6EB-BB05-48B3-A7F5-2841908EA867}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -153,6 +163,7 @@ Global
 		{FD972904-2394-4523-8A21-8326B71A401D} = {32895D8E-874A-4FDB-BDE9-9B881C3D60EC}
 		{D7A672AA-9F3B-4AEF-9EEF-75929F4E16C7} = {32895D8E-874A-4FDB-BDE9-9B881C3D60EC}
 		{E3C32B55-F571-4496-89CF-46E5A7B9FCDF} = {169F9AA0-5347-42B9-97F5-EB8A79890FF4}
+		{4FC0D6EB-BB05-48B3-A7F5-2841908EA867} = {169F9AA0-5347-42B9-97F5-EB8A79890FF4}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {12010269-6504-4E72-A023-574932AA0634}
