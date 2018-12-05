@@ -45,7 +45,7 @@ namespace FullTextSearchService
             };
         }
 
-        public async static Task<SearchOutput> FindInCache(
+        private async static Task<SearchOutput> FindInCache(
             string query,
             IReliableDictionary<string, CachedItem<SearchOutput>> cache,
             ITransaction tx)
@@ -65,12 +65,12 @@ namespace FullTextSearchService
             }
         }
 
-        public static bool IsFresh(CachedItem<SearchOutput> cachedItem)
+        private static bool IsFresh(CachedItem<SearchOutput> cachedItem)
         {
             return cachedItem.CachedAt.Add(CACHE_LIFESPAN) > DateTime.UtcNow;
         }
 
-        public static async Task SaveToCache(
+        private static async Task SaveToCache(
             string query,
             IReliableDictionary<string, CachedItem<SearchOutput>> cache,
             SearchOutput output,
@@ -83,7 +83,7 @@ namespace FullTextSearchService
             });
         }
 
-        public static async Task<Result<SearchOutput>> SearchOverAPI(
+        private static async Task<Result<SearchOutput>> SearchOverAPI(
             SearchInput input, IGitHubClient gitHubClient)
         {
             return await gitHubClient.SearchRepositoriesAsync(

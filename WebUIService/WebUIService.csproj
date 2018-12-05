@@ -13,8 +13,8 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" />
-    <PackageReference Include="Microsoft.ServiceFabric.AspNetCore.Kestrel" Version="3.2.187" />
-    <PackageReference Include="Microsoft.ServiceFabric.Services.Remoting" Version="3.2.187" />
+    <PackageReference Include="Microsoft.ServiceFabric.AspNetCore.Kestrel" Version="3.3.617" />
+    <PackageReference Include="Microsoft.ServiceFabric.Services.Remoting" Version="3.3.617" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.6" />
   </ItemGroup>
 
