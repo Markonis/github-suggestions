@@ -102,7 +102,7 @@ namespace ScraperService
             IReliableConcurrentQueue<ScrapingTask> secondTaskQueue)
         {
             IUserRepoSearchActor userRepoSearchActor =
-                ServiceFinder.GetUserRepoSearchActor(Context, scrapingTask.UserLogin);
+                ServiceProvider.GetUserRepoSearchActor(Context, scrapingTask.UserLogin);
 
             await Scraper.PerformTaskAsync(
                 scrapingTask: scrapingTask, gitHubClient: gitHubClient,

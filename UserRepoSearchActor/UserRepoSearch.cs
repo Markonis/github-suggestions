@@ -98,7 +98,7 @@ namespace UserRepoSearchActor
                 Login = userLogin
             });
 
-            IScraperService scraperService = ServiceFinder
+            IScraperService scraperService = ServiceProvider
                 .GetScraperService(context);
 
             await scraperService.RequestUserInfoScrapingAsync(
@@ -121,7 +121,7 @@ namespace UserRepoSearchActor
             PerformFullTextSearchAsync(
             StatefulServiceContext context, SearchInput input)
         {
-            IFullTextSearchService fullTextSearchService = ServiceFinder
+            IFullTextSearchService fullTextSearchService = ServiceProvider
                 .GetFullTextSearchService(context);
 
             return await fullTextSearchService.SearchAsync(new SearchInput
@@ -169,7 +169,7 @@ namespace UserRepoSearchActor
                     Repository = repository
                 });
 
-            IScraperService scraperService = ServiceFinder
+            IScraperService scraperService = ServiceProvider
                 .GetScraperService(context);
 
             await scraperService.RequestRepositoryScrapingAsync(

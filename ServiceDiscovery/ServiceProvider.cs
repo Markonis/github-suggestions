@@ -8,7 +8,7 @@ using System.Fabric;
 
 namespace ServiceDiscovery
 {
-    public static class ServiceFinder
+    public static class ServiceProvider
     {
         public static IUserRepoSearchActor GetUserRepoSearchActor(
             ServiceContext context, string gitHubLogin)

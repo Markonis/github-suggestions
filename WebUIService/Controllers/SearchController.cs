@@ -34,7 +34,7 @@ namespace WebUIService.Controllers
                 if (string.IsNullOrWhiteSpace(input.Query))
                     return BadRequest();
 
-                IUserRepoSearchActor userRepoSearchActor = ServiceFinder
+                IUserRepoSearchActor userRepoSearchActor = ServiceProvider
                     .GetUserRepoSearchActor(_context, gitHubLogin);
 
                 Result<SearchOutput> result = await userRepoSearchActor.SearchAsync(new SearchInput
@@ -73,7 +73,7 @@ namespace WebUIService.Controllers
                 if (string.IsNullOrWhiteSpace(input.Query))
                     return BadRequest();
 
-                IUserRepoSearchActor userRepoSearchActor = ServiceFinder
+                IUserRepoSearchActor userRepoSearchActor = ServiceProvider
                     .GetUserRepoSearchActor(_context, gitHubLogin);
 
                 AutoCompleteOutput output = await userRepoSearchActor
@@ -102,7 +102,7 @@ namespace WebUIService.Controllers
                 if (string.IsNullOrWhiteSpace(input.Query))
                     return BadRequest();
 
-                IUserRepoSearchActor userRepoSearchActor = ServiceFinder
+                IUserRepoSearchActor userRepoSearchActor = ServiceProvider
                     .GetUserRepoSearchActor(_context, gitHubLogin);
 
                 SearchOutput output = await userRepoSearchActor
