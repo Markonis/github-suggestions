@@ -1,5 +1,6 @@
 ﻿using Domain.Interop;
 using Domain.V1.Entities;
+using Domain.V1.Messages.Scraper;
 using GitHubAPI;
 using Microsoft.ServiceFabric.Data;
 using Microsoft.ServiceFabric.Data.Collections;
@@ -7,12 +8,86 @@ using Serialization;
 using ServiceInterfaces;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace ScraperService
 {
     public static class Scraper
     {
+        public async static Task RunAsync(
+            CancellationToken cancellationToken,
+            IGitHubClient gitHubClient,
+            IReliableStateManager stateManager,
+            IUserRepoSearchActorProvider userRepoSearchActorProvider)
+        {
+            IReliableConcurrentQueue<ScrapingTask> firstTaskQueue =
+                await GetFirstTaskQueue(stateManager);
+
+            IReliableConcurrentQueue<ScrapingTask> secondTaskQueue =
+                await GetSecondTaskQueue(stateManager);
+
+            while (true)
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+                if (firstTaskQueue.Count > 0 || secondTaskQueue.Count > 0)
+                {
+                    using (var tx = stateManager.CreateTransaction())
+                    {
+                        var dequeued = await firstTaskQueue.TryDequeueAsync(tx, cancellationToken);
+
+                        if (!dequeued.HasValue)
+                            dequeued = await secondTaskQueue.TryDequeueAsync(tx, cancellationToken);
+
+                        await ProcessScrapingTask(
+                            scrapingTask: dequeued.Value,
+                            gitHubClient: gitHubClient, tx: tx,
+                            firstTaskQueue: firstTaskQueue,
+                            secondTaskQueue: secondTaskQueue,
+                            userRepoSearchActorProvider: userRepoSearchActorProvider);
+
+                        await tx.CommitAsync();
+                    }
+                }
+                else
+                {
+                    await Task.Delay(Constants.EMPTY_DELAY, cancellationToken);
+                }
+            }
+        }
+
+        private static Task<IReliableConcurrentQueue<ScrapingTask>>
+            GetFirstTaskQueue(IReliableStateManager stateManager)
+        {
+            return stateManager.GetOrAddAsync<IReliableConcurrentQueue<ScrapingTask>>(
+                Constants.FIRST_TASK_QUEUE);
+        }
+
+        private static Task<IReliableConcurrentQueue<ScrapingTask>>
+            GetSecondTaskQueue(IReliableStateManager stateManager)
+        {
+            return stateManager.GetOrAddAsync<IReliableConcurrentQueue<ScrapingTask>>(
+                    Constants.SECOND_TASK_QUEUE);
+        }
+
+        private async static Task ProcessScrapingTask(
+            ScrapingTask scrapingTask,
+            IGitHubClient gitHubClient,
+            ITransaction tx,
+            IReliableConcurrentQueue<ScrapingTask> firstTaskQueue,
+            IReliableConcurrentQueue<ScrapingTask> secondTaskQueue,
+            IUserRepoSearchActorProvider userRepoSearchActorProvider)
+        {
+            IUserRepoSearchActor userRepoSearchActor =
+                userRepoSearchActorProvider.Provide(scrapingTask.UserLogin);
+
+            await Scraper.PerformTaskAsync(
+                scrapingTask: scrapingTask, gitHubClient: gitHubClient,
+                tx: tx, userRepoSearchActor: userRepoSearchActor,
+                firstTaskQueue: firstTaskQueue,
+                secondTaskQueue: secondTaskQueue);
+        }
+
         public async static Task PerformTaskAsync(
             ScrapingTask scrapingTask,
             IGitHubClient gitHubClient,
@@ -126,6 +201,55 @@ namespace ScraperService
                 UserLogin = scrapingTask.UserLogin,
                 ScheduledRepositories = scheduledRepositories
             });
+        }
+
+        public async static Task<Result> RequestRepositoryScrapingAsync(
+            IReliableStateManager stateManager,
+            RequestRepositoryScrapingInput input)
+        {
+            var firstTaskQueue = await GetFirstTaskQueue(stateManager);
+
+            using (var tx = stateManager.CreateTransaction())
+            {
+                await firstTaskQueue.EnqueueAsync(tx, new ScrapingTask
+                {
+                    AuthToken = input.AuthToken,
+                    ScheduledRepositories = new List<ScheduledRepository>
+                    {
+                        new ScheduledRepository
+                        {
+                            Name = input.Name,
+                            Owner = input.Owner
+                        }
+                    },
+                    UserLogin = input.UserLogin,
+                    Type = ScrapingTaskType.Repository
+                });
+
+                await tx.CommitAsync();
+            }
+
+            return new Result { Success = true };
+        }
+
+        public async static Task<Result> RequestUserInfoScrapingAsync(
+            IReliableStateManager stateManager, RequestUserInfoScrapingInput input)
+        {
+            var firstTaskQueue = await GetFirstTaskQueue(stateManager);
+
+            using (var tx = stateManager.CreateTransaction())
+            {
+                await firstTaskQueue.EnqueueAsync(tx, new ScrapingTask
+                {
+                    AuthToken = input.AuthToken,
+                    UserLogin = input.UserLogin,
+                    Type = ScrapingTaskType.UserInfo
+                });
+
+                await tx.CommitAsync();
+            }
+
+            return new Result { Success = true };
         }
     }
 }
